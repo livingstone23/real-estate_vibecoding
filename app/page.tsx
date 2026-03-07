@@ -1,11 +1,23 @@
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { PropertyCard } from './components/PropertyCard';
-import { mockProperties } from './data/mockProperties';
+import { Pagination } from './components/Pagination';
+import { getFeaturedProperties, getNewInMarketProperties, PAGE_SIZE } from '../lib/properties';
 
-export default function Home() {
-  const featuredProperties = mockProperties.filter(p => p.featured);
-  const newProperties = mockProperties.filter(p => !p.featured);
+interface HomeProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
+  const currentPage = Math.max(1, parseInt(params.page ?? '1', 10));
+
+  const [featuredProperties, { data: newProperties, count }] = await Promise.all([
+    getFeaturedProperties(),
+    getNewInMarketProperties(currentPage),
+  ]);
+
+  const totalPages = Math.ceil(count / PAGE_SIZE);
 
   return (
     <>
@@ -38,7 +50,10 @@ export default function Home() {
           <div className="flex items-end justify-between mb-8">
             <div>
               <h2 className="text-2xl font-light text-nordic-dark dark:text-white">New in Market</h2>
-              <p className="text-nordic-muted mt-1 text-sm">Fresh opportunities added this week.</p>
+              <p className="text-nordic-muted mt-1 text-sm">
+                Fresh opportunities added this week.{' '}
+                <span className="text-mosque font-medium">{count} properties</span>
+              </p>
             </div>
 
             <div className="hidden md:flex bg-white dark:bg-white/5 p-1 rounded-lg">
@@ -54,11 +69,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-12 text-center">
-            <button className="px-8 py-3 bg-white dark:bg-white/5 border border-nordic-dark/10 dark:border-white/10 hover:border-mosque hover:text-mosque text-nordic-dark dark:text-white font-medium rounded-lg transition-all hover:shadow-md">
-              Load more properties
-            </button>
-          </div>
+          <Pagination currentPage={currentPage} totalPages={totalPages} />
         </section>
       </main>
     </>
