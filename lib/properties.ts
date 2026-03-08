@@ -10,7 +10,8 @@ export async function getFeaturedProperties(): Promise<Property[]> {
         .from('properties')
         .select('*')
         .eq('featured', true)
-        .order('id');
+        .order('id')
+        .limit(2);
 
     if (error) throw new Error(error.message);
     return (data ?? []).map(mapRow);
@@ -38,8 +39,23 @@ export async function getNewInMarketProperties(
 
     let query = supabase
         .from('properties')
-        .select('*', { count: 'exact' })
-        .eq('featured', false);
+        .select('*', { count: 'exact' });
+
+    const hasFilters = Boolean(
+        filters?.q ||
+        (filters?.type && filters.type !== 'All') ||
+        filters?.minPrice ||
+        filters?.maxPrice ||
+        filters?.beds ||
+        filters?.baths ||
+        filters?.amenities
+    );
+
+    // Only exclude featured properties from the default "New in Market" list if no filters are active.
+    // If a user is searching, they should see ALL matching properties, including featured ones.
+    if (!hasFilters) {
+        query = query.eq('featured', false);
+    }
 
     // Apply Search Input (Title or Address)
     if (filters?.q) {

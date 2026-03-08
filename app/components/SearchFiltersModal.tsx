@@ -13,8 +13,8 @@ export function SearchFiltersModal({ onClose }: SearchFiltersModalProps) {
 
     // Local state for filters, initialized from URL if present
     const [location, setLocation] = useState(searchParams.get('q') || '');
-    const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '1200000');
-    const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '4500000');
+    const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '');
+    const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
     const [propertyType, setPropertyType] = useState(searchParams.get('type') || 'Any Type');
     const [beds, setBeds] = useState(parseInt(searchParams.get('beds') || '0', 10));
     const [baths, setBaths] = useState(parseInt(searchParams.get('baths') || '0', 10));

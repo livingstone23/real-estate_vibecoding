@@ -32,8 +32,18 @@ export default async function Home({ searchParams }: HomeProps) {
     amenities: params.amenities
   };
 
+  const hasActiveFilters = Boolean(
+    filters.q ||
+    (filters.type && filters.type !== 'All') ||
+    filters.minPrice ||
+    filters.maxPrice ||
+    filters.beds ||
+    filters.baths ||
+    filters.amenities
+  );
+
   const [featuredProperties, { data: newProperties, count }] = await Promise.all([
-    getFeaturedProperties(),
+    hasActiveFilters ? Promise.resolve([]) : getFeaturedProperties(),
     getNewInMarketProperties(currentPage, filters),
   ]);
 
@@ -47,23 +57,25 @@ export default async function Home({ searchParams }: HomeProps) {
         <HeroSection />
 
         {/* Featured Collections Section */}
-        <section className="mb-16">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 className="text-2xl font-light text-nordic-dark dark:text-white">Featured Collections</h2>
-              <p className="text-nordic-muted mt-1 text-sm">Curated properties for the discerning eye.</p>
+        {!hasActiveFilters && featuredProperties.length > 0 && (
+          <section className="mb-16">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-light text-nordic-dark dark:text-white">Featured Collections</h2>
+                <p className="text-nordic-muted mt-1 text-sm">Curated properties for the discerning eye.</p>
+              </div>
+              <a href="#" className="hidden sm:flex items-center gap-1 text-sm font-medium text-mosque hover:opacity-70 transition-opacity">
+                View all <span className="material-icons text-sm">arrow_forward</span>
+              </a>
             </div>
-            <a href="#" className="hidden sm:flex items-center gap-1 text-sm font-medium text-mosque hover:opacity-70 transition-opacity">
-              View all <span className="material-icons text-sm">arrow_forward</span>
-            </a>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {featuredProperties.map(property => (
-              <PropertyCard key={property.id} property={property} isFeatured={true} />
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {featuredProperties.map(property => (
+                <PropertyCard key={property.id} property={property} isFeatured={true} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* New in Market Section */}
         <section>
