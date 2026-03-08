@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Property } from '../data/mockProperties';
 
 interface PropertyCardProps {
@@ -17,7 +18,7 @@ export const PropertyCard = ({ property, isFeatured = false }: PropertyCardProps
 
     if (isFeatured) {
         return (
-            <div className="group relative rounded-xl overflow-hidden shadow-soft bg-white dark:bg-white/5 cursor-pointer">
+            <Link href={`/properties/${property.idSeo}`} className="group relative rounded-xl overflow-hidden shadow-soft bg-white dark:bg-white/5 cursor-pointer block h-full">
                 <div className="aspect-[4/3] w-full overflow-hidden relative">
                     <img
                         alt={property.imageAlt}
@@ -56,13 +57,13 @@ export const PropertyCard = ({ property, isFeatured = false }: PropertyCardProps
                         </div>
                     </div>
                 </div>
-            </div>
+            </Link>
         );
     }
 
     // Regular Non-Featured Card ("New In Market")
     return (
-        <article className="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-card hover:shadow-soft transition-all duration-300 group cursor-pointer h-full flex flex-col">
+        <Link href={`/properties/${property.idSeo}`} className="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-card hover:shadow-soft transition-all duration-300 group cursor-pointer h-full flex flex-col block">
             <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                     alt={property.imageAlt}
@@ -99,6 +100,6 @@ export const PropertyCard = ({ property, isFeatured = false }: PropertyCardProps
                     </div>
                 </div>
             </div>
-        </article>
+        </Link>
     );
 };

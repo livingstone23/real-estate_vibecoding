@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar = () => {
@@ -6,12 +7,12 @@ export const Navbar = () => {
         <nav className="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-nordic-dark/10 dark:border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
-                    <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <Link href="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
                         <div className="w-8 h-8 rounded-lg bg-nordic-dark flex items-center justify-center">
                             <span className="material-icons text-white text-lg">apartment</span>
                         </div>
                         <span className="text-xl font-semibold tracking-tight text-nordic-dark dark:text-white">LuxeEstate</span>
-                    </div>
+                    </Link>
 
                     <div className="hidden md:flex items-center space-x-8">
                         <a className="text-mosque font-medium text-sm border-b-2 border-mosque px-1 py-1" href="#">Buy</a>

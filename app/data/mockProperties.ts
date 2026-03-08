@@ -1,8 +1,8 @@
-// Types only – data now lives in Supabase.
 export type PropertyStatus = "Exclusive" | "New Arrival" | "FOR SALE" | "FOR RENT";
 
 export interface Property {
     id: string;
+    idSeo: string;
     title: string;
     address: string;
     price: number;

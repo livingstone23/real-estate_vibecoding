@@ -2,23 +2,7 @@ import { supabase } from './supabase';
 import { Property } from '../app/data/mockProperties';
 
 // Map DB snake_case columns → camelCase Property interface
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapRow(row: any): Property {
-    return {
-        id: row.id,
-        title: row.title,
-        address: row.address,
-        price: Number(row.price),
-        pricePerMonth: row.price_per_month ?? false,
-        status: row.status,
-        imageUrl: row.image_url,
-        imageAlt: row.image_alt,
-        beds: Number(row.beds),
-        baths: Number(row.baths),
-        area: Number(row.area),
-        featured: row.featured,
-    };
-}
+import { mapRow } from './mapper';
 
 /** Returns all featured properties (no pagination). */
 export async function getFeaturedProperties(): Promise<Property[]> {
