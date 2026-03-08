@@ -8,7 +8,7 @@ export interface Property {
     price: number;
     pricePerMonth?: boolean;
     status: PropertyStatus;
-    imageUrl: string;
+    images: string[];
     imageAlt: string;
     beds: number;
     baths: number;

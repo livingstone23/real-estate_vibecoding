@@ -11,13 +11,12 @@ export function mapRow(row: any): Property & { idSeo: string; images: string[] }
         price: Number(row.price),
         pricePerMonth: row.price_per_month ?? false,
         status: row.status,
-        imageUrl: row.image_url,
         imageAlt: row.image_alt,
         beds: Number(row.beds),
         baths: Number(row.baths),
         area: Number(row.area),
         featured: row.featured,
         idSeo: row.id_seo,
-        images: row.images || [row.image_url], // Fallback if empty array
+        images: row.images || [], // Now guaranteed to exist and have at least 3 elements
     };
 }

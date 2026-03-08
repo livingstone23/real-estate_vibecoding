@@ -24,7 +24,6 @@ export type Database = {
           id: string
           id_seo: string
           image_alt: string
-          image_url: string
           images: string[] | null
           price: number
           price_per_month: boolean
@@ -40,7 +39,6 @@ export type Database = {
           id?: string
           id_seo: string
           image_alt: string
-          image_url: string
           images?: string[] | null
           price: number
           price_per_month?: boolean
@@ -56,7 +54,6 @@ export type Database = {
           id?: string
           id_seo?: string
           image_alt?: string
-          image_url?: string
           images?: string[] | null
           price?: number
           price_per_month?: boolean
