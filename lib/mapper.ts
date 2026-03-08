@@ -3,7 +3,7 @@ import { Property } from '../app/data/mockProperties';
 
 // Map DB snake_case columns → camelCase Property interface
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function mapRow(row: any): Property & { idSeo: string; images: string[] } {
+export function mapRow(row: any): Property & { idSeo: string; images: string[]; amenities: string[] } {
     return {
         id: row.id,
         title: row.title,
@@ -18,5 +18,6 @@ export function mapRow(row: any): Property & { idSeo: string; images: string[] }
         featured: row.featured,
         idSeo: row.id_seo,
         images: row.images || [], // Now guaranteed to exist and have at least 3 elements
+        amenities: Array.isArray(row.amenities) ? row.amenities : [], // Safely handle JSONB array
     };
 }

@@ -5,16 +5,36 @@ import { Pagination } from './components/Pagination';
 import { getFeaturedProperties, getNewInMarketProperties, PAGE_SIZE } from '../lib/properties';
 
 interface HomeProps {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    q?: string;
+    type?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    beds?: string;
+    baths?: string;
+    amenities?: string;
+  }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
   const params = await searchParams;
   const currentPage = Math.max(1, parseInt(params.page ?? '1', 10));
 
+  // Extract all potential filters explicitly to pass them
+  const filters = {
+    q: params.q,
+    type: params.type,
+    minPrice: params.minPrice,
+    maxPrice: params.maxPrice,
+    beds: params.beds,
+    baths: params.baths,
+    amenities: params.amenities
+  };
+
   const [featuredProperties, { data: newProperties, count }] = await Promise.all([
     getFeaturedProperties(),
-    getNewInMarketProperties(currentPage),
+    getNewInMarketProperties(currentPage, filters),
   ]);
 
   const totalPages = Math.ceil(count / PAGE_SIZE);

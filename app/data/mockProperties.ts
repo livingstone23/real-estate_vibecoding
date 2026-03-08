@@ -10,6 +10,7 @@ export interface Property {
     status: PropertyStatus;
     images: string[];
     imageAlt: string;
+    amenities: string[];
     beds: number;
     baths: number;
     area: number;
