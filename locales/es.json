@@ -3,7 +3,8 @@
         "buy": "Comprar",
         "rent": "Alquilar",
         "sell": "Vender",
-        "savedHomes": "Casas Guardadas"
+        "savedHomes": "Casas Guardadas",
+        "signIn": "Ingresar"
     },
     "Hero": {
         "title": "Encuentra tu",
@@ -84,5 +85,16 @@
         "startingFrom": "Desde",
         "withDownPayment": "con 20% de enganche",
         "calculateMortgage": "Calcular Hipoteca"
+    },
+    "Login": {
+        "welcome": "Bienvenido a LuxeEstate",
+        "unlock": "Desbloquea propiedades exclusivas en todo el mundo.",
+        "continueGoogle": "Continuar con Google",
+        "continueGithub": "Continuar con GitHub",
+        "noAccount": "¿No tienes cuenta?",
+        "signUp": "Regístrate",
+        "privacy": "Política de Privacidad",
+        "terms": "Términos de Servicio",
+        "help": "Centro de Ayuda"
     }
 }

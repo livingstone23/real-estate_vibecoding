@@ -1,13 +1,18 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { useI18n } from '../../providers/I18nProvider';
+import { getServerTranslations } from '../../lib/i18n';
+import { createClient } from '../../utils/supabase/server';
+import { SignOutButton } from './auth/SignOutButton';
 
-export const Navbar = () => {
-    const { t } = useI18n();
+export const Navbar = async () => {
+    const { t } = await getServerTranslations();
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // We try to extract an avatar URL, or fallback to a default image for demo purposes
+    const avatarUrl = user?.user_metadata?.avatar_url || "https://lh3.googleusercontent.com/aida-public/AB6AXuCAWhQZ663Bd08kmzjbOPmUk4UIxYooNONShMEFXLR-DtmVi6Oz-TiaY77SPwFk7g0OobkeZEOMvt6v29mSOD0Xm2g95WbBG3ZjWXmiABOUwGU0LOySRfVDo-JTXQ0-gtwjWxbmue0qDm91m-zEOEZwAW6iRFB1qC1bAU-wkjxm67Sbztq8w7srHkFT9bVEC86qG-FzhOBTomhAurNRmx9l8Yfqabk328NfdKuVLckgCdaPsNFE3yN65MeoRi05GA_gXIMwG4YDIeA";
     return (
         <nav className="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-nordic-dark/10 dark:border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,15 +41,28 @@ export const Navbar = () => {
                         </button>
                         <LanguageSwitcher />
                         <ThemeToggle />
-                        <button className="flex items-center gap-2 pl-2 border-l border-nordic-dark/10 dark:border-white/10 ml-2">
-                            <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden ring-2 ring-transparent hover:ring-mosque transition-all">
-                                <img
-                                    alt="Profile"
-                                    className="w-full h-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAWhQZ663Bd08kmzjbOPmUk4UIxYooNONShMEFXLR-DtmVi6Oz-TiaY77SPwFk7g0OobkeZEOMvt6v29mSOD0Xm2g95WbBG3ZjWXmiABOUwGU0LOySRfVDo-JTXQ0-gtwjWxbmue0qDm91m-zEOEZwAW6iRFB1qC1bAU-wkjxm67Sbztq8w7srHkFT9bVEC86qG-FzhOBTomhAurNRmx9l8Yfqabk328NfdKuVLckgCdaPsNFE3yN65MeoRi05GA_gXIMwG4YDIeA"
-                                />
+
+                        {user ? (
+                            <div className="flex items-center gap-2 pl-2 border-l border-nordic-dark/10 dark:border-white/10 ml-2">
+                                <Link href="/profile" className="flex items-center">
+                                    <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden ring-2 ring-transparent hover:ring-mosque transition-all">
+                                        <img
+                                            alt={user.user_metadata?.full_name || "Profile"}
+                                            className="w-full h-full object-cover"
+                                            src={avatarUrl}
+                                        />
+                                    </div>
+                                </Link>
+                                <SignOutButton />
                             </div>
-                        </button>
+                        ) : (
+                            <Link href="/login" className="flex items-center gap-2 pl-4 border-l border-nordic-dark/10 dark:border-white/10 ml-2">
+                                <span className="text-sm font-medium text-nordic-dark hover:text-mosque dark:text-white transition-colors">{t('Navbar', 'signIn') || 'Sign In'}</span>
+                                <div className="w-9 h-9 rounded-full bg-nordic-dark/5 dark:bg-white/10 flex items-center justify-center text-nordic-dark dark:text-white hover:bg-mosque hover:text-white transition-all">
+                                    <span className="material-icons text-xl">login</span>
+                                </div>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>

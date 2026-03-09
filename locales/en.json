@@ -3,7 +3,8 @@
         "buy": "Buy",
         "rent": "Rent",
         "sell": "Sell",
-        "savedHomes": "Saved Homes"
+        "savedHomes": "Saved Homes",
+        "signIn": "Login"
     },
     "Hero": {
         "title": "Find your",
@@ -84,5 +85,16 @@
         "startingFrom": "Starting from",
         "withDownPayment": "with 20% down",
         "calculateMortgage": "Calculate Mortgage"
+    },
+    "Login": {
+        "welcome": "Welcome to LuxeEstate",
+        "unlock": "Unlock exclusive properties worldwide.",
+        "continueGoogle": "Continue with Google",
+        "continueGithub": "Continue with GitHub",
+        "noAccount": "Don't have an account?",
+        "signUp": "Sign up",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "help": "Help Center"
     }
 }
