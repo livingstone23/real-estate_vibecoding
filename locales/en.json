@@ -1,0 +1,88 @@
+{
+    "Navbar": {
+        "buy": "Buy",
+        "rent": "Rent",
+        "sell": "Sell",
+        "savedHomes": "Saved Homes"
+    },
+    "Hero": {
+        "title": "Find your",
+        "titleBold": "sanctuary",
+        "searchPlaceholder": "Search by city, neighborhood, or address...",
+        "searchButton": "Search",
+        "chipAll": "All",
+        "chipHouse": "House",
+        "chipApartment": "Apartment",
+        "chipVilla": "Villa",
+        "chipPenthouse": "Penthouse",
+        "filtersButton": "Filters"
+    },
+    "FeaturedSection": {
+        "title": "Featured Collections",
+        "subtitle": "Curated properties for the discerning eye.",
+        "viewAll": "View all"
+    },
+    "NewInMarket": {
+        "title": "New in Market",
+        "subtitle": "Fresh opportunities added this week.",
+        "propertiesFound": "{count} properties found"
+    },
+    "PropertyCard": {
+        "beds": "{count} beds",
+        "baths": "{count} baths",
+        "area": "{count} sq ft"
+    },
+    "Filters": {
+        "title": "Filters",
+        "selectRange": "Select Range",
+        "location": "Location",
+        "locationPlaceholder": "City, neighborhood, or address",
+        "priceRange": "Price Range",
+        "minPrice": "Min Price",
+        "maxPrice": "Max Price",
+        "propertyType": "Property Type",
+        "anyType": "Any Type",
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "amenities": "Amenities & Features",
+        "pool": "Swimming Pool",
+        "gym": "Gym",
+        "parking": "Parking",
+        "ac": "Air Conditioning",
+        "wifi": "High-speed Wifi",
+        "terrace": "Patio / Terrace",
+        "clearAll": "Clear all filters",
+        "apply": "Apply Filters",
+        "any": "Any"
+    },
+    "Pagination": {
+        "previous": "Previous",
+        "next": "Next"
+    },
+    "PropertyDetail": {
+        "premium": "Premium",
+        "viewAllPhotos": "View All Photos",
+        "topRatedAgent": "Top Rated Agent",
+        "scheduleVisit": "Schedule Visit",
+        "contactAgent": "Contact Agent",
+        "viewOnMap": "View on Map",
+        "propertyFeatures": "Property Features",
+        "squareMeters": "Square Meters",
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "garage": "Garage",
+        "aboutThisHome": "About this home",
+        "readMore": "Read more",
+        "amenities": "Amenities",
+        "smartHome": "Smart Home System",
+        "swimmingPool": "Swimming Pool",
+        "heatingCooling": "Central Heating & Cooling",
+        "evCharging": "Electric Vehicle Charging",
+        "privateGym": "Private Gym",
+        "wineCellar": "Wine Cellar",
+        "estimatedPayment": "Estimated Payment",
+        "startingFrom": "Starting from",
+        "withDownPayment": "with 20% down",
+        "calculateMortgage": "Calculate Mortgage"
+    }
+}

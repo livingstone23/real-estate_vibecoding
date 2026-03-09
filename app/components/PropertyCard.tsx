@@ -1,13 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { Property } from '../data/mockProperties';
+import { getServerTranslations } from '../../lib/i18n';
 
 interface PropertyCardProps {
     property: Property;
     isFeatured?: boolean;
 }
 
-export const PropertyCard = ({ property, isFeatured = false }: PropertyCardProps) => {
+export const PropertyCard = async ({ property, isFeatured = false }: PropertyCardProps) => {
+    const { t } = await getServerTranslations();
+
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -47,13 +50,13 @@ export const PropertyCard = ({ property, isFeatured = false }: PropertyCardProps
 
                     <div className="flex items-center gap-6 mt-6 pt-6 border-t border-nordic-dark/5 dark:border-white/10">
                         <div className="flex items-center gap-2 text-nordic-muted text-sm">
-                            <span className="material-icons text-lg">king_bed</span> {property.beds} Beds
+                            <span className="material-icons text-lg">king_bed</span> {t('PropertyCard', 'beds', { count: property.beds })}
                         </div>
                         <div className="flex items-center gap-2 text-nordic-muted text-sm">
-                            <span className="material-icons text-lg">bathtub</span> {property.baths} Baths
+                            <span className="material-icons text-lg">bathtub</span> {t('PropertyCard', 'baths', { count: property.baths })}
                         </div>
                         <div className="flex items-center gap-2 text-nordic-muted text-sm">
-                            <span className="material-icons text-lg">square_foot</span> {property.area.toLocaleString()} m²
+                            <span className="material-icons text-lg">square_foot</span> {t('PropertyCard', 'area', { count: property.area.toLocaleString() })}
                         </div>
                     </div>
                 </div>

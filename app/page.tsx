@@ -3,6 +3,7 @@ import { HeroSection } from './components/HeroSection';
 import { PropertyCard } from './components/PropertyCard';
 import { Pagination } from './components/Pagination';
 import { getFeaturedProperties, getNewInMarketProperties, PAGE_SIZE } from '../lib/properties';
+import { getServerTranslations } from '../lib/i18n';
 
 interface HomeProps {
   searchParams: Promise<{
@@ -20,6 +21,7 @@ interface HomeProps {
 export default async function Home({ searchParams }: HomeProps) {
   const params = await searchParams;
   const currentPage = Math.max(1, parseInt(params.page ?? '1', 10));
+  const { t } = await getServerTranslations();
 
   // Extract all potential filters explicitly to pass them
   const filters = {
@@ -61,11 +63,11 @@ export default async function Home({ searchParams }: HomeProps) {
           <section className="mb-16">
             <div className="flex items-end justify-between mb-8">
               <div>
-                <h2 className="text-2xl font-light text-nordic-dark dark:text-white">Featured Collections</h2>
-                <p className="text-nordic-muted mt-1 text-sm">Curated properties for the discerning eye.</p>
+                <h2 className="text-2xl font-light text-nordic-dark dark:text-white">{t('FeaturedSection', 'title')}</h2>
+                <p className="text-nordic-muted mt-1 text-sm">{t('FeaturedSection', 'subtitle')}</p>
               </div>
               <a href="#" className="hidden sm:flex items-center gap-1 text-sm font-medium text-mosque hover:opacity-70 transition-opacity">
-                View all <span className="material-icons text-sm">arrow_forward</span>
+                {t('FeaturedSection', 'viewAll')} <span className="material-icons text-sm">arrow_forward</span>
               </a>
             </div>
 
@@ -81,17 +83,17 @@ export default async function Home({ searchParams }: HomeProps) {
         <section>
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-light text-nordic-dark dark:text-white">New in Market</h2>
+              <h2 className="text-2xl font-light text-nordic-dark dark:text-white">{t('NewInMarket', 'title')}</h2>
               <p className="text-nordic-muted mt-1 text-sm">
-                Fresh opportunities added this week.{' '}
-                <span className="text-mosque font-medium">{count} properties</span>
+                {t('NewInMarket', 'subtitle')}{' '}
+                <span className="text-mosque font-medium">{t('NewInMarket', 'propertiesFound', { count })}</span>
               </p>
             </div>
 
             <div className="hidden md:flex bg-white dark:bg-white/5 p-1 rounded-lg">
-              <button className="px-4 py-1.5 rounded-md text-sm font-medium bg-nordic-dark text-white shadow-sm">All</button>
-              <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark dark:hover:text-white">Buy</button>
-              <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark dark:hover:text-white">Rent</button>
+              <button className="px-4 py-1.5 rounded-md text-sm font-medium bg-nordic-dark text-white shadow-sm">{t('Hero', 'chipAll')}</button>
+              <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark dark:hover:text-white">{t('Navbar', 'buy')}</button>
+              <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark dark:hover:text-white">{t('Navbar', 'rent')}</button>
             </div>
           </div>
 

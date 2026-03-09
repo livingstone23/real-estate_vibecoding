@@ -1,0 +1,88 @@
+{
+    "Navbar": {
+        "buy": "Comprar",
+        "rent": "Alquilar",
+        "sell": "Vender",
+        "savedHomes": "Casas Guardadas"
+    },
+    "Hero": {
+        "title": "Encuentra tu",
+        "titleBold": "santuario",
+        "searchPlaceholder": "Busca por ciudad, vecindario o dirección...",
+        "searchButton": "Buscar",
+        "chipAll": "Todos",
+        "chipHouse": "Casa",
+        "chipApartment": "Apartamento",
+        "chipVilla": "Villa",
+        "chipPenthouse": "Penthouse",
+        "filtersButton": "Filtros"
+    },
+    "FeaturedSection": {
+        "title": "Colecciones Destacadas",
+        "subtitle": "Propiedades seleccionadas para el ojo más exigente.",
+        "viewAll": "Ver todas"
+    },
+    "NewInMarket": {
+        "title": "Nuevas en el Mercado",
+        "subtitle": "Nuevas oportunidades agregadas esta semana.",
+        "propertiesFound": "{count} propiedades encontradas"
+    },
+    "PropertyCard": {
+        "beds": "{count} habs",
+        "baths": "{count} baños",
+        "area": "{count} m²"
+    },
+    "Filters": {
+        "title": "Filtros",
+        "selectRange": "Seleccionar Rango",
+        "location": "Ubicación",
+        "locationPlaceholder": "Ciudad, vecindario o dirección",
+        "priceRange": "Rango de Precio",
+        "minPrice": "Precio Mínimo",
+        "maxPrice": "Precio Máximo",
+        "propertyType": "Tipo de Propiedad",
+        "anyType": "Cualquier Tipo",
+        "bedrooms": "Habitaciones",
+        "bathrooms": "Baños",
+        "amenities": "Amenidades y Características",
+        "pool": "Piscina",
+        "gym": "Gimnasio",
+        "parking": "Estacionamiento",
+        "ac": "Aire Acondicionado",
+        "wifi": "Wifi de Alta Velocidad",
+        "terrace": "Patio / Terraza",
+        "clearAll": "Limpiar todos los filtros",
+        "apply": "Aplicar Filtros",
+        "any": "Cualquiera"
+    },
+    "Pagination": {
+        "previous": "Anterior",
+        "next": "Siguiente"
+    },
+    "PropertyDetail": {
+        "premium": "Premium",
+        "viewAllPhotos": "Ver Todas las Fotos",
+        "topRatedAgent": "Agente Destacado",
+        "scheduleVisit": "Agendar Visita",
+        "contactAgent": "Contactar Agente",
+        "viewOnMap": "Ver en el Mapa",
+        "propertyFeatures": "Características de la Propiedad",
+        "squareMeters": "Metros Cuadrados",
+        "bedrooms": "Habitaciones",
+        "bathrooms": "Baños",
+        "garage": "Garaje",
+        "aboutThisHome": "Acerca de esta casa",
+        "readMore": "Leer más",
+        "amenities": "Amenidades",
+        "smartHome": "Sistema de Casa Inteligente",
+        "swimmingPool": "Piscina",
+        "heatingCooling": "Calefacción y Aire Central",
+        "evCharging": "Carga de Vehículo Eléctrico",
+        "privateGym": "Gimnasio Privado",
+        "wineCellar": "Bodega de Vinos",
+        "estimatedPayment": "Pago Estimado",
+        "startingFrom": "Desde",
+        "withDownPayment": "con 20% de enganche",
+        "calculateMortgage": "Calcular Hipoteca"
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "Navbar": {
+        "buy": "Acheter",
+        "rent": "Louer",
+        "sell": "Vendre",
+        "savedHomes": "Maisons Sauvegardées"
+    },
+    "Hero": {
+        "title": "Trouvez votre",
+        "titleBold": "sanctuaire",
+        "searchPlaceholder": "Recherchez par ville, quartier ou adresse...",
+        "searchButton": "Rechercher",
+        "chipAll": "Tous",
+        "chipHouse": "Maison",
+        "chipApartment": "Appartement",
+        "chipVilla": "Villa",
+        "chipPenthouse": "Penthouse",
+        "filtersButton": "Filtres"
+    },
+    "FeaturedSection": {
+        "title": "Collections en Vedette",
+        "subtitle": "Propriétés sélectionnées pour l'œil le plus exigeant.",
+        "viewAll": "Voir tout"
+    },
+    "NewInMarket": {
+        "title": "Nouvelles sur le Marché",
+        "subtitle": "Nouvelles opportunités ajoutées cette semaine.",
+        "propertiesFound": "{count} propriétés trouvées"
+    },
+    "PropertyCard": {
+        "beds": "{count} lits",
+        "baths": "{count} s. de bain",
+        "area": "{count} m²"
+    },
+    "Filters": {
+        "title": "Filtres",
+        "selectRange": "Sélectionner la Plage",
+        "location": "Emplacement",
+        "locationPlaceholder": "Ville, quartier ou adresse",
+        "priceRange": "Fourchette de Prix",
+        "minPrice": "Prix Minimum",
+        "maxPrice": "Prix Maximum",
+        "propertyType": "Type de Propriété",
+        "anyType": "Tout Type",
+        "bedrooms": "Chambres",
+        "bathrooms": "Salles de Bain",
+        "amenities": "Équipements et Caractéristiques",
+        "pool": "Piscine",
+        "gym": "Salle de Sport",
+        "parking": "Parking",
+        "ac": "Climatisation",
+        "wifi": "Wifi Haute Vitesse",
+        "terrace": "Patio / Terrasse",
+        "clearAll": "Effacer tous les filtres",
+        "apply": "Appliquer les Filtres",
+        "any": "N'importe lequel"
+    },
+    "Pagination": {
+        "previous": "Précédent",
+        "next": "Suivant"
+    },
+    "PropertyDetail": {
+        "premium": "Premium",
+        "viewAllPhotos": "Voir Toutes les Photos",
+        "topRatedAgent": "Agent Mieux Noté",
+        "scheduleVisit": "Planifier une Visite",
+        "contactAgent": "Contacter l'Agent",
+        "viewOnMap": "Voir sur la Carte",
+        "propertyFeatures": "Caractéristiques de la Propriété",
+        "squareMeters": "Mètres Carrés",
+        "bedrooms": "Chambres",
+        "bathrooms": "Salles de Bain",
+        "garage": "Garage",
+        "aboutThisHome": "À propos de cette maison",
+        "readMore": "Lire la suite",
+        "amenities": "Équipements",
+        "smartHome": "Système de Maison Intelligente",
+        "swimmingPool": "Piscine",
+        "heatingCooling": "Chauffage et Climatisation Centraux",
+        "evCharging": "Recharge pour Véhicule Électrique",
+        "privateGym": "Salle de Sport Privée",
+        "wineCellar": "Cave à Vin",
+        "estimatedPayment": "Paiement Estimé",
+        "startingFrom": "À partir de",
+        "withDownPayment": "avec 20% d'acompte",
+        "calculateMortgage": "Calculer l'Hypothèque"
+    }
+}
