@@ -7,8 +7,9 @@ import { setLocaleCookie } from '../app/actions/locale';
 import en from '../locales/en.json';
 import es from '../locales/es.json';
 import fr from '../locales/fr.json';
+import de from '../locales/de.json';
 
-const dictionaries: Record<string, any> = { en, es, fr };
+const dictionaries: Record<string, any> = { en, es, fr, de };
 export const supportedLocales = Object.keys(dictionaries);
 export const defaultLocale = 'en';
 

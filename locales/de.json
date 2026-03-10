@@ -1,0 +1,100 @@
+{
+    "Navbar": {
+        "buy": "Kaufen",
+        "rent": "Mieten",
+        "sell": "Verkaufen",
+        "savedHomes": "Gespeicherte Immobilien",
+        "signIn": "Anmelden"
+    },
+    "Hero": {
+        "title": "Finden Sie Ihr",
+        "titleBold": "Refugium",
+        "searchPlaceholder": "Suchen Sie nach Stadt, Nachbarschaft oder Adresse...",
+        "searchButton": "Suchen",
+        "chipAll": "Alle",
+        "chipHouse": "Haus",
+        "chipApartment": "Wohnung",
+        "chipVilla": "Villa",
+        "chipPenthouse": "Penthouse",
+        "filtersButton": "Filter"
+    },
+    "FeaturedSection": {
+        "title": "Ausgewählte Kollektionen",
+        "subtitle": "Kuratierte Eigenschaften für das anspruchsvolle Auge.",
+        "viewAll": "Alle anzeigen"
+    },
+    "NewInMarket": {
+        "title": "Neu auf dem Markt",
+        "subtitle": "Frische Angebote, die diese Woche hinzugefügt wurden.",
+        "propertiesFound": "{count} Immobilien gefunden"
+    },
+    "PropertyCard": {
+        "beds": "{count} Betten",
+        "baths": "{count} Bäder",
+        "area": "{count} m²"
+    },
+    "Filters": {
+        "title": "Filter",
+        "selectRange": "Bereich auswählen",
+        "location": "Standort",
+        "locationPlaceholder": "Stadt, Nachbarschaft oder Adresse",
+        "priceRange": "Preisklasse",
+        "minPrice": "Mindestpreis",
+        "maxPrice": "Höchstpreis",
+        "propertyType": "Immobilientyp",
+        "anyType": "Jeder Typ",
+        "bedrooms": "Schlafzimmer",
+        "bathrooms": "Badezimmer",
+        "amenities": "Ausstattung & Eigenschaften",
+        "pool": "Schwimmbad",
+        "gym": "Fitnessstudio",
+        "parking": "Parkplatz",
+        "ac": "Klimaanlage",
+        "wifi": "Highspeed-WLAN",
+        "terrace": "Terrasse",
+        "clearAll": "Alle Filter löschen",
+        "apply": "Filter anwenden",
+        "any": "Beliebig"
+    },
+    "Pagination": {
+        "previous": "Zurück",
+        "next": "Weiter"
+    },
+    "PropertyDetail": {
+        "premium": "Premium",
+        "viewAllPhotos": "Alle Fotos ansehen",
+        "topRatedAgent": "Top-Bewerteter Makler",
+        "scheduleVisit": "Besichtigung vereinbaren",
+        "contactAgent": "Makler kontaktieren",
+        "viewOnMap": "Auf Karte ansehen",
+        "propertyFeatures": "Eigenschaften der Immobilie",
+        "squareMeters": "Quadratmeter",
+        "bedrooms": "Schlafzimmer",
+        "bathrooms": "Badezimmer",
+        "garage": "Garage",
+        "aboutThisHome": "Über dieses Zuhause",
+        "readMore": "Mehr lesen",
+        "amenities": "Ausstattung",
+        "smartHome": "Smart-Home-System",
+        "swimmingPool": "Schwimmbad",
+        "heatingCooling": "Zentralheizung & Kühlung",
+        "evCharging": "Laden von Elektrofahrzeugen",
+        "privateGym": "Privates Fitnessstudio",
+        "wineCellar": "Weinkeller",
+        "estimatedPayment": "Geschätzte Teilzahlung",
+        "startingFrom": "Ab",
+        "withDownPayment": "mit 20% Anzahlung",
+        "calculateMortgage": "Hypothek berechnen"
+    },
+    "Login": {
+        "welcome": "Willkommen bei LuxeEstate",
+        "unlock": "Schalten Sie exklusive Immobilien weltweit frei.",
+        "continueGoogle": "Weiter mit Google",
+        "continueGithub": "Weiter mit GitHub",
+        "noAccount": "Sie haben noch kein Konto?",
+        "signUp": "Registrieren",
+        "privacy": "Datenschutzerklärung",
+        "terms": "Nutzungsbedingungen",
+        "help": "Hilfe-Center"
+    }
+}

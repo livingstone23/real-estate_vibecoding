@@ -2,8 +2,9 @@ import { cookies } from 'next/headers';
 import en from '../locales/en.json';
 import es from '../locales/es.json';
 import fr from '../locales/fr.json';
+import de from '../locales/de.json';
 
-const dictionaries: Record<string, any> = { en, es, fr };
+const dictionaries: Record<string, any> = { en, es, fr, de };
 export const defaultLocale = 'en';
 
 export async function getServerTranslations() {
