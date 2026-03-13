@@ -1,8 +1,15 @@
 import { getUsersWithRoles } from '@/app/actions/admin'
 import RoleSelector from './RoleSelector'
+import Link from 'next/link'
 
-export default async function AdminUsersPage() {
-  const users = await getUsersWithRoles()
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}) {
+  const { page: pageParam } = await searchParams
+  const currentPage = Math.max(1, parseInt(pageParam || '1', 10))
+  const { users, total, totalPages, currentPage: safePage } = await getUsersWithRoles(currentPage)
 
   return (
     <div className="font-display">
@@ -124,13 +131,55 @@ export default async function AdminUsersPage() {
 
       </main>
       
+      {/* Pagination Footer */}
       <footer className="mt-auto border-t border-[#19322F]/5 py-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-[#19322F]/60">
-              Showing <span className="font-medium text-[#19322F]">{users.length}</span> users
+              Showing <span className="font-medium text-[#19322F]">{((safePage - 1) * 10) + 1}</span> to <span className="font-medium text-[#19322F]">{Math.min(safePage * 10, total)}</span> of <span className="font-medium text-[#19322F]">{total}</span> users
             </p>
           </div>
+          <nav className="relative z-0 inline-flex rounded-md -space-x-px">
+            {safePage > 1 ? (
+              <Link
+                href={`/admin/users?page=${safePage - 1}`}
+                className="inline-flex items-center px-2 py-2 rounded-l-md text-sm font-medium text-[#19322F]/50 hover:text-[#006655] transition-colors"
+              >
+                <span className="material-icons text-xl">chevron_left</span>
+              </Link>
+            ) : (
+              <span className="inline-flex items-center px-2 py-2 rounded-l-md text-sm font-medium text-[#19322F]/20">
+                <span className="material-icons text-xl">chevron_left</span>
+              </span>
+            )}
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+              <Link
+                key={pageNum}
+                href={`/admin/users?page=${pageNum}`}
+                className={`relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md mx-0.5 transition-colors ${
+                  pageNum === safePage
+                    ? 'bg-[#006655] text-white shadow-sm'
+                    : 'bg-transparent text-[#19322F]/70 hover:bg-white hover:text-[#006655]'
+                }`}
+              >
+                {pageNum}
+              </Link>
+            ))}
+
+            {safePage < totalPages ? (
+              <Link
+                href={`/admin/users?page=${safePage + 1}`}
+                className="inline-flex items-center px-2 py-2 rounded-r-md text-sm font-medium text-[#19322F]/50 hover:text-[#006655] transition-colors"
+              >
+                <span className="material-icons text-xl">chevron_right</span>
+              </Link>
+            ) : (
+              <span className="inline-flex items-center px-2 py-2 rounded-r-md text-sm font-medium text-[#19322F]/20">
+                <span className="material-icons text-xl">chevron_right</span>
+              </span>
+            )}
+          </nav>
         </div>
       </footer>
     </div>

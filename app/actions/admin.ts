@@ -3,17 +3,31 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function getUsersWithRoles() {
+const USERS_PAGE_SIZE = 10
+
+export async function getUsersWithRoles(page: number = 1) {
   const supabase = await createClient()
 
-  // Fetch all users from public.users
+  // Get total count
+  const { count: totalCount } = await supabase
+    .from('users')
+    .select('*', { count: 'exact', head: true })
+
+  const total = totalCount || 0
+  const totalPages = Math.max(1, Math.ceil(total / USERS_PAGE_SIZE))
+  const safePage = Math.min(Math.max(1, page), totalPages)
+  const from = (safePage - 1) * USERS_PAGE_SIZE
+  const to = from + USERS_PAGE_SIZE - 1
+
+  // Fetch paginated users from public.users
   const { data: users, error: usersError } = await supabase
     .from('users')
     .select('*')
+    .range(from, to)
 
   if (usersError) {
     console.error('Error fetching users:', usersError)
-    return []
+    return { users: [], total: 0, totalPages: 1, currentPage: 1 }
   }
 
   // Fetch all roles to have a reference of what's available
@@ -23,7 +37,7 @@ export async function getUsersWithRoles() {
 
   if (rolesError) {
     console.error('Error fetching roles:', rolesError)
-    return []
+    return { users: [], total: 0, totalPages: 1, currentPage: 1 }
   }
 
   // Fetch all user_roles assignments, joined with roles
@@ -33,10 +47,10 @@ export async function getUsersWithRoles() {
 
   if (userRolesError) {
     console.error('Error fetching user roles:', userRolesError)
-    return []
+    return { users: [], total: 0, totalPages: 1, currentPage: 1 }
   }
 
-  return users.map((user) => {
+  const mappedUsers = users.map((user) => {
     const userRoleAssignments = userRoles?.filter((ur) => ur.user_id === user.id) || []
     const assignedRoleNames = userRoleAssignments
       .map((ur: any) => ur.roles?.name)
@@ -53,6 +67,13 @@ export async function getUsersWithRoles() {
       availableRoles: allRoles || []
     }
   })
+
+  return {
+    users: mappedUsers,
+    total,
+    totalPages,
+    currentPage: safePage,
+  }
 }
 
 export async function toggleUserRole(userId: string, roleName: string, assign: boolean) {

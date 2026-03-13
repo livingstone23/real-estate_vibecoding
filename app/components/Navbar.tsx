@@ -4,7 +4,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { getServerTranslations } from '../../lib/i18n';
 import { createClient } from '../../utils/supabase/server';
-import { SignOutButton } from './auth/SignOutButton';
+import { UserProfileMenu } from './auth/UserProfileMenu';
 
 export const Navbar = async () => {
     const { t } = await getServerTranslations();
@@ -13,6 +13,23 @@ export const Navbar = async () => {
 
     // We try to extract an avatar URL, or fallback to a default image for demo purposes
     const avatarUrl = user?.user_metadata?.avatar_url || "https://lh3.googleusercontent.com/aida-public/AB6AXuCAWhQZ663Bd08kmzjbOPmUk4UIxYooNONShMEFXLR-DtmVi6Oz-TiaY77SPwFk7g0OobkeZEOMvt6v29mSOD0Xm2g95WbBG3ZjWXmiABOUwGU0LOySRfVDo-JTXQ0-gtwjWxbmue0qDm91m-zEOEZwAW6iRFB1qC1bAU-wkjxm67Sbztq8w7srHkFT9bVEC86qG-FzhOBTomhAurNRmx9l8Yfqabk328NfdKuVLckgCdaPsNFE3yN65MeoRi05GA_gXIMwG4YDIeA";
+
+    // Check if user has admin role
+    let isAdmin = false
+    if (user) {
+        const { data: roleData } = await supabase
+            .from('user_roles')
+            .select('roles(name)')
+            .eq('user_id', user.id)
+
+        if (roleData) {
+            const roleNames = roleData.map((r: any) => r.roles?.name).filter(Boolean)
+            isAdmin = roleNames.includes('admin')
+        }
+    }
+
+    const userName = user?.user_metadata?.full_name || user?.email || 'User'
+
     return (
         <nav className="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-nordic-dark/10 dark:border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,16 +61,11 @@ export const Navbar = async () => {
 
                         {user ? (
                             <div className="flex items-center gap-2 pl-2 border-l border-nordic-dark/10 dark:border-white/10 ml-2">
-                                <Link href="/profile" className="flex items-center">
-                                    <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden ring-2 ring-transparent hover:ring-mosque transition-all">
-                                        <img
-                                            alt={user.user_metadata?.full_name || "Profile"}
-                                            className="w-full h-full object-cover"
-                                            src={avatarUrl}
-                                        />
-                                    </div>
-                                </Link>
-                                <SignOutButton />
+                                <UserProfileMenu 
+                                    avatarUrl={avatarUrl}
+                                    userName={userName}
+                                    isAdmin={isAdmin}
+                                />
                             </div>
                         ) : (
                             <Link href="/login" className="flex items-center gap-2 pl-4 border-l border-nordic-dark/10 dark:border-white/10 ml-2">

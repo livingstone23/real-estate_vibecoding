@@ -1,14 +1,34 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 
-export default async function AdminPropertiesPage() {
+const PAGE_SIZE = 10
+
+export default async function AdminDashboardPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ page?: string }>
+}) {
+    const { page: pageParam } = await searchParams
+    const currentPage = Math.max(1, parseInt(pageParam || '1', 10))
     const supabase = await createClient()
 
-    // Fetch properties
+    // Get total count
+    const { count: totalCount } = await supabase
+        .from('properties')
+        .select('*', { count: 'exact', head: true })
+
+    const total = totalCount || 0
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+    const safePage = Math.min(currentPage, totalPages)
+    const from = (safePage - 1) * PAGE_SIZE
+    const to = from + PAGE_SIZE - 1
+
+    // Fetch paginated properties
     const { data: properties, error } = await supabase
         .from('properties')
         .select('*')
         .order('id', { ascending: true })
+        .range(from, to)
 
     if (error) {
         console.error("Error loading properties:", error)
@@ -27,7 +47,7 @@ export default async function AdminPropertiesPage() {
                     <button className="bg-white border md:border-gray-200 hover:bg-gray-50 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm inline-flex items-center gap-2">
                         <span className="material-icons text-base">filter_list</span> Filter
                     </button>
-                    <button className="bg-[#006655] hover:bg-[#006655]/90 text-white px-5 py-2.5 rounded-lg text-sm font-medium shadow-[#006655]/20 shadow-md transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2">
+                    <button className="bg-[#006655] hover:bg-[#006655]/90 text-white px-5 py-2.5 rounded-lg text-sm font-medium shadow-md shadow-[#006655]/20 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2">
                         <span className="material-icons text-base">add</span> Add New Property
                     </button>
                 </div>
@@ -38,7 +58,7 @@ export default async function AdminPropertiesPage() {
                 <div className="bg-white p-5 rounded-xl border border-[#006655]/10 shadow-sm flex items-center justify-between">
                     <div>
                         <p className="text-sm font-medium text-gray-500">Total Listings</p>
-                        <p className="text-2xl font-bold mt-1">{properties?.length || 0}</p>
+                        <p className="text-2xl font-bold mt-1">{total}</p>
                     </div>
                     <div className="h-10 w-10 rounded-full bg-[#006655]/10 flex items-center justify-center text-[#006655]">
                         <span className="material-icons">apartment</span>
@@ -137,13 +157,50 @@ export default async function AdminPropertiesPage() {
                 {/* Pagination */}
                 <div className="px-6 py-4 border-t border-gray-100 flex flex-col sm:flex-row gap-3 items-center justify-between bg-gray-50/50">
                     <div className="text-sm text-gray-500">
-                        Showing <span className="font-medium text-[#19322F]">1</span> to <span className="font-medium text-[#19322F]">
-                            {Math.min(properties?.length || 0, 10)}
-                        </span> of <span className="font-medium text-[#19322F]">{properties?.length || 0}</span> results
+                        Showing <span className="font-medium text-[#19322F]">{from + 1}</span> to <span className="font-medium text-[#19322F]">
+                            {Math.min(from + (properties?.length || 0), total)}
+                        </span> of <span className="font-medium text-[#19322F]">{total}</span> results
                     </div>
-                    <div className="flex gap-2">
-                        <button className="px-3 py-1 text-sm border border-gray-200 rounded-md text-gray-600 hover:bg-white disabled:opacity-50">Previous</button>
-                        <button className="px-3 py-1 text-sm border border-gray-200 rounded-md text-gray-600 hover:bg-white">Next</button>
+                    <div className="flex gap-1">
+                        {safePage > 1 ? (
+                            <Link
+                                href={`/admin?page=${safePage - 1}`}
+                                className="inline-flex items-center px-2 py-2 rounded-l-md text-sm font-medium text-[#19322F]/50 hover:text-[#006655] transition-colors"
+                            >
+                                <span className="material-icons text-xl">chevron_left</span>
+                            </Link>
+                        ) : (
+                            <span className="inline-flex items-center px-2 py-2 rounded-l-md text-sm font-medium text-[#19322F]/20">
+                                <span className="material-icons text-xl">chevron_left</span>
+                            </span>
+                        )}
+
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                            <Link
+                                key={pageNum}
+                                href={`/admin?page=${pageNum}`}
+                                className={`relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md mx-0.5 transition-colors ${
+                                    pageNum === safePage
+                                        ? 'bg-[#006655] text-white shadow-sm'
+                                        : 'bg-transparent text-[#19322F]/70 hover:bg-white hover:text-[#006655]'
+                                }`}
+                            >
+                                {pageNum}
+                            </Link>
+                        ))}
+
+                        {safePage < totalPages ? (
+                            <Link
+                                href={`/admin?page=${safePage + 1}`}
+                                className="inline-flex items-center px-2 py-2 rounded-r-md text-sm font-medium text-[#19322F]/50 hover:text-[#006655] transition-colors"
+                            >
+                                <span className="material-icons text-xl">chevron_right</span>
+                            </Link>
+                        ) : (
+                            <span className="inline-flex items-center px-2 py-2 rounded-r-md text-sm font-medium text-[#19322F]/20">
+                                <span className="material-icons text-xl">chevron_right</span>
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>
