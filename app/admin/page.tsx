@@ -47,9 +47,9 @@ export default async function AdminDashboardPage({
                     <button className="bg-white border md:border-gray-200 hover:bg-gray-50 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm inline-flex items-center gap-2">
                         <span className="material-icons text-base">filter_list</span> Filter
                     </button>
-                    <button className="bg-[#006655] hover:bg-[#006655]/90 text-white px-5 py-2.5 rounded-lg text-sm font-medium shadow-md shadow-[#006655]/20 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2">
+                    <Link href="/admin/properties/create" className="bg-[#006655] hover:bg-[#006655]/90 text-white px-5 py-2.5 rounded-lg text-sm font-medium shadow-md shadow-[#006655]/20 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2">
                         <span className="material-icons text-base">add</span> Add New Property
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -104,13 +104,15 @@ export default async function AdminDashboardPage({
                         <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
                             <div className="relative h-20 w-28 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200">
                                 <img 
-                                    src={property.images && property.images.length > 0 ? property.images[0] : 'https://placehold.co/400x300?text=No+Image'} 
+                                    src={property.images && property.images.length > 0 ? property.images[0] : (property.image_url || 'https://placehold.co/400x300?text=No+Image')} 
                                     alt={property.image_alt || property.title} 
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
                                 />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold group-hover:text-[#006655] transition-colors cursor-pointer">{property.title}</h3>
+                                <Link href={`/properties/${property.id_seo || property.id}`}>
+                                    <h3 className="text-lg font-bold group-hover:text-[#006655] transition-colors cursor-pointer">{property.title}</h3>
+                                </Link>
                                 <p className="text-sm text-gray-500">{property.address || property.location}</p>
                                 <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
                                     <span className="flex items-center gap-1"><span className="material-icons text-[14px]">bed</span> {property.beds || 0} Beds</span>
@@ -138,9 +140,9 @@ export default async function AdminDashboardPage({
                             </span>
                         </div>
                         <div className="col-span-12 md:col-span-2 flex items-center justify-end gap-2">
-                            <button className="p-2 rounded-lg text-gray-400 hover:text-[#006655] hover:bg-[#D9ECC8]/30 transition-all tooltip-trigger" title="Edit Property">
+                            <Link href={`/admin/properties/${property.id}/edit`} className="p-2 rounded-lg text-gray-400 hover:text-[#006655] hover:bg-[#D9ECC8]/30 transition-all tooltip-trigger" title="Edit Property">
                                 <span className="material-icons text-xl">edit</span>
-                            </button>
+                            </Link>
                             <button className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all tooltip-trigger" title="Delete Property">
                                 <span className="material-icons text-xl">delete_outline</span>
                             </button>

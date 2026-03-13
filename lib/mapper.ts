@@ -17,7 +17,7 @@ export function mapRow(row: any): Property & { idSeo: string; images: string[]; 
         area: Number(row.area),
         featured: row.featured,
         idSeo: row.id_seo,
-        images: row.images || [], // Now guaranteed to exist and have at least 3 elements
+        images: row.images && row.images.length > 0 ? row.images : (row.image_url ? [row.image_url] : []),
         amenities: Array.isArray(row.amenities) ? row.amenities : [], // Safely handle JSONB array
     };
 }
