@@ -24,6 +24,7 @@ export type AdminProperty = {
   amenities: string[]
   latitude?: number | null
   longitude?: number | null
+  is_active?: boolean
 }
 
 const AMENITY_OPTIONS = [
@@ -357,6 +358,33 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
 
       {/* Right Column */}
       <div className="xl:col-span-4 space-y-8">
+        {/* Visibility / Status */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-[#006655]/10 flex items-center gap-3 bg-gradient-to-r from-[#006655]/5 to-transparent">
+            <div className="w-8 h-8 rounded-full bg-[#006655]/10 flex items-center justify-center text-[#19322F]">
+              <span className="material-icons text-lg">visibility</span>
+            </div>
+            <h2 className="text-lg font-bold text-[#19322F]">Visibility</h2>
+          </div>
+          <div className="p-6">
+            <label className="flex items-center justify-between cursor-pointer group">
+              <div className="space-y-0.5">
+                <span className="text-sm font-bold text-[#19322F] group-hover:text-[#006655] transition-colors font-sf-pro">Active Property</span>
+                <p className="text-xs text-gray-500 font-sf-pro">Show this property on the public website</p>
+              </div>
+              <div className="relative">
+                <input 
+                  type="checkbox" 
+                  name="is_active"
+                  defaultChecked={initialData?.is_active ?? true}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#006655]/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#006655]"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+
         {/* Location */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-[#006655]/10 flex items-center gap-3 bg-gradient-to-r from-[#006655]/5 to-transparent">

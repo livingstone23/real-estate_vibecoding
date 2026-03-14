@@ -10,6 +10,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
         .from('properties')
         .select('*')
         .eq('featured', true)
+        .eq('is_active', true)
         .order('id')
         .limit(2);
 
@@ -39,7 +40,8 @@ export async function getNewInMarketProperties(
 
     let query = supabase
         .from('properties')
-        .select('*', { count: 'exact' });
+        .select('*', { count: 'exact' })
+        .eq('is_active', true);
 
     const hasFilters = Boolean(
         filters?.q ||

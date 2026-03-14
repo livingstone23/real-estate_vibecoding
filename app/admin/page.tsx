@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
+import { togglePropertyStatusAction } from '@/app/actions/properties'
 
 const PAGE_SIZE = 10
 
@@ -68,7 +69,7 @@ export default async function AdminDashboardPage({
                     <div>
                         <p className="text-sm font-medium text-gray-500">Active Properties</p>
                         <p className="text-2xl font-bold mt-1">
-                            {properties?.filter(p => !p.price_per_month).length || 0}
+                            {properties?.filter(p => p.is_active !== false).length || 0}
                         </p>
                     </div>
                     <div className="h-10 w-10 rounded-full bg-[#D9ECC8] flex items-center justify-center text-[#006655]">
@@ -129,7 +130,7 @@ export default async function AdminDashboardPage({
                                 <div className="text-xs text-gray-400">Monthly</div>
                             )}
                         </div>
-                        <div className="col-span-6 md:col-span-2">
+                        <div className="col-span-6 md:col-span-2 flex flex-col gap-1.5">
                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
                                 property.featured 
                                     ? 'bg-[#D9ECC8] text-[#006655] border border-[#006655]/10' 
@@ -138,14 +139,32 @@ export default async function AdminDashboardPage({
                                 <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${property.featured ? 'bg-[#006655]' : 'bg-gray-500'}`}></span>
                                 {property.status || (property.featured ? 'Featured' : 'Standard')}
                             </span>
+                            {property.is_active === false && (
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-600 border border-red-200 w-fit">
+                                    <span className="material-icons text-[12px] mr-1">visibility_off</span>
+                                    Inactive
+                                </span>
+                            )}
                         </div>
                         <div className="col-span-12 md:col-span-2 flex items-center justify-end gap-2">
                             <Link href={`/admin/properties/${property.id}/edit`} className="p-2 rounded-lg text-gray-400 hover:text-[#006655] hover:bg-[#D9ECC8]/30 transition-all tooltip-trigger" title="Edit Property">
                                 <span className="material-icons text-xl">edit</span>
                             </Link>
-                            <button className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all tooltip-trigger" title="Delete Property">
-                                <span className="material-icons text-xl">delete_outline</span>
-                            </button>
+
+                            <form action={async () => {
+                                'use server'
+                                await togglePropertyStatusAction(property.id.toString(), property.is_active !== false)
+                            }}>
+                                <button type="submit" className={`p-2 rounded-lg transition-all tooltip-trigger ${
+                                    property.is_active === false 
+                                        ? 'text-[#006655] hover:bg-[#D9ECC8]/30' 
+                                        : 'text-gray-400 hover:text-red-600 hover:bg-red-50'
+                                }`} title={property.is_active === false ? "Activate Property" : "Deactivate Property"}>
+                                    <span className="material-icons text-xl">
+                                        {property.is_active === false ? 'visibility' : 'visibility_off'}
+                                    </span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 ))}

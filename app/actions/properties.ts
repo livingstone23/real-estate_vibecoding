@@ -117,7 +117,8 @@ export async function createPropertyAction(formData: FormData) {
         image_alt: title || 'Property Image',
         id_seo: generateSlug(title) || `property-${Date.now()}`,
         latitude,
-        longitude
+        longitude,
+        is_active: true
       })
       .select()
       .single()
@@ -193,6 +194,9 @@ export async function updatePropertyAction(formData: FormData) {
     updatePayload.latitude = latStr ? parseFloat(latStr) : null
     updatePayload.longitude = lngStr ? parseFloat(lngStr) : null
 
+    const isActive = formData.get('is_active') === 'on'
+    updatePayload.is_active = isActive
+
     updatePayload.images = allImages;
     if (allImages.length > 0) {
       updatePayload.image_url = allImages[0]
@@ -222,6 +226,25 @@ export async function updatePropertyAction(formData: FormData) {
     console.error("Action Error:", error)
     return { success: false, error: error.message }
   }
+}
+
+export async function togglePropertyStatusAction(id: string, currentStatus: boolean) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { success: false, error: 'Unauthorized' }
+
+  const { data, error } = await supabase
+    .from('properties')
+    .update({ is_active: !currentStatus })
+    .eq('id', id)
+    .select()
+
+  if (error) return { success: false, error: error.message }
+  
+  revalidatePath('/admin')
+  revalidatePath('/')
+  return { success: true }
 }
 
 export async function getPropertyById(id: string) {
