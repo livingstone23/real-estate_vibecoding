@@ -91,6 +91,11 @@ export async function createPropertyAction(formData: FormData) {
     const amenitiesStr = formData.get('amenities') as string
     const amenities = amenitiesStr ? JSON.parse(amenitiesStr) : []
 
+    const latStr = formData.get('latitude') as string
+    const lngStr = formData.get('longitude') as string
+    const latitude = latStr ? parseFloat(latStr) : null
+    const longitude = lngStr ? parseFloat(lngStr) : null
+
     // 3. Insert into DB
     const { data, error } = await supabase
       .from('properties')
@@ -110,7 +115,9 @@ export async function createPropertyAction(formData: FormData) {
         images: newImageUrls,
         image_url: mainImageUrl,
         image_alt: title || 'Property Image',
-        id_seo: generateSlug(title) || `property-${Date.now()}`
+        id_seo: generateSlug(title) || `property-${Date.now()}`,
+        latitude,
+        longitude
       })
       .select()
       .single()
@@ -148,8 +155,11 @@ export async function updatePropertyAction(formData: FormData) {
     const id = formData.get('id') as string
     if (!id) return { success: false, error: 'Property ID missing' }
 
-    // 1. Check if new images were uploaded
+    // 1. Check if new images were uploaded and combine with existing
+    const existingImages = formData.getAll('existing_images') as string[]
     const newImageUrls = await uploadPropertyImages(formData)
+    
+    const allImages = [...existingImages, ...newImageUrls]
     
     // We only update image_url if a new one was actually uploaded
     const title = formData.get('title') as string
@@ -178,9 +188,16 @@ export async function updatePropertyAction(formData: FormData) {
     const amenitiesStr = formData.get('amenities') as string
     if (amenitiesStr) updatePayload.amenities = JSON.parse(amenitiesStr)
 
-    if (newImageUrls.length > 0) {
-      updatePayload.image_url = newImageUrls[0]
-      updatePayload.images = newImageUrls
+    const latStr = formData.get('latitude') as string
+    const lngStr = formData.get('longitude') as string
+    updatePayload.latitude = latStr ? parseFloat(latStr) : null
+    updatePayload.longitude = lngStr ? parseFloat(lngStr) : null
+
+    updatePayload.images = allImages;
+    if (allImages.length > 0) {
+      updatePayload.image_url = allImages[0]
+    } else {
+      updatePayload.image_url = ''
     }
 
     // 2. Update DB

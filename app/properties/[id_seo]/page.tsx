@@ -149,7 +149,7 @@ export default async function PropertyPage({ params }: Props) {
                             {/* Map Card Component */}
                             <div className="bg-white p-2 rounded-xl shadow-sm border border-mosque/5">
                                 <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-100">
-                                    <ClientMap address={property.address} />
+                                    <ClientMap address={property.address} lat={property.latitude ?? undefined} lng={property.longitude ?? undefined} />
                                     <a className="absolute bottom-2 right-2 bg-white/90 text-xs font-medium px-2 py-1 rounded shadow-sm text-nordic hover:text-mosque z-[1000]" href="#">{t('PropertyDetail', 'viewOnMap')}</a>
                                 </div>
                             </div>

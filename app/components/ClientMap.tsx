@@ -11,6 +11,12 @@ const Map = dynamic(() => import('./Map'), {
     ),
 });
 
-export default function ClientMap({ address }: { address: string }) {
-    return <Map address={address} />;
+interface ClientMapProps {
+    address: string;
+    lat?: number;
+    lng?: number;
+}
+
+export default function ClientMap({ address, lat, lng }: ClientMapProps) {
+    return <Map address={address} lat={lat} lng={lng} />;
 }

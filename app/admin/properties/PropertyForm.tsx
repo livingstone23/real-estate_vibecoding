@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import ClientMap from '@/app/components/ClientMap'
 
 // This should map to your Supabase Property type
 export type AdminProperty = {
@@ -21,6 +22,8 @@ export type AdminProperty = {
   baths: number
   parking: number
   amenities: string[]
+  latitude?: number | null
+  longitude?: number | null
 }
 
 const AMENITY_OPTIONS = [
@@ -53,14 +56,22 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
   )
 
   // State for images preview
-  const [existingImageUrl, setExistingImageUrl] = useState(
+  const [existingImages, setExistingImages] = useState<string[]>(
     (initialData?.images && initialData.images.length > 0)
-      ? initialData.images[0]
-      : (initialData?.image_url || '')
+      ? initialData.images
+      : (initialData?.image_url ? [initialData.image_url] : [])
   )
   const [previewFiles, setPreviewFiles] = useState<{file: File, preview: string}[]>([])
   const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const [lat, setLat] = useState<number | null>(initialData?.latitude ?? null)
+  const [lng, setLng] = useState<number | null>(initialData?.longitude ?? null)
+  const [currentAddress, setCurrentAddress] = useState(initialData?.address || '')
+
+  const removeExistingImage = (index: number) => {
+    setExistingImages(prev => prev.filter((_, i) => i !== index))
+  }
 
   const handleAmenityToggle = (amenity: string) => {
     setSelectedAmenities(prev => 
@@ -127,7 +138,12 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
     formData.set('parking', parking.toString())
     formData.set('amenities', JSON.stringify(selectedAmenities))
     
-    // Append files
+    // Append existing images
+    existingImages.forEach(url => {
+      formData.append('existing_images', url)
+    })
+    
+    // Append new files
     previewFiles.forEach(pf => {
       formData.append('images', pf.file)
     })
@@ -297,17 +313,27 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-              {/* Show existing image if any */}
-              {existingImageUrl && !previewFiles.length && (
-                <div className="aspect-square rounded-lg overflow-hidden relative group shadow-sm bg-gray-100">
-                  <img src={existingImageUrl} alt="Current property" className="w-full h-full object-cover" />
-                  <span className="absolute top-2 left-2 bg-[#006655] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm font-sf-pro uppercase tracking-wider">Current</span>
+              {/* Show existing images */}
+              {existingImages.map((imgUrl, idx) => (
+                <div key={`existing-${idx}`} className="aspect-square rounded-lg overflow-hidden relative group shadow-sm bg-gray-100">
+                  <img src={imgUrl} alt={`Current property ${idx}`} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-[#19322F]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[2px]">
+                    <button 
+                      type="button" 
+                      onClick={(e) => { e.stopPropagation(); removeExistingImage(idx); }}
+                      className="w-8 h-8 rounded-full bg-white text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors"
+                    >
+                      <span className="material-icons text-sm">delete</span>
+                    </button>
+                  </div>
+                  {idx === 0 && <span className="absolute top-2 left-2 bg-[#006655] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm font-sf-pro uppercase tracking-wider">Main</span>}
+                  {idx > 0 && <span className="absolute top-2 left-2 bg-gray-800 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm font-sf-pro uppercase tracking-wider">Current</span>}
                 </div>
-              )}
+              ))}
               
               {/* Show new previews */}
               {previewFiles.map((pf, idx) => (
-                <div key={idx} className="aspect-square rounded-lg overflow-hidden relative group shadow-sm bg-gray-100">
+                <div key={`new-${idx}`} className="aspect-square rounded-lg overflow-hidden relative group shadow-sm bg-gray-100">
                   <img src={pf.preview} alt="Preview" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-[#19322F]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[2px]">
                     <button 
@@ -318,9 +344,10 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
                       <span className="material-icons text-sm">delete</span>
                     </button>
                   </div>
-                  {idx === 0 && (
+                  {existingImages.length === 0 && idx === 0 && (
                     <span className="absolute top-2 left-2 bg-[#006655] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm font-sf-pro uppercase tracking-wider">Main</span>
                   )}
+                  <span className="absolute top-2 right-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm font-sf-pro uppercase tracking-wider">New</span>
                 </div>
               ))}
             </div>
@@ -346,10 +373,59 @@ export function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
                 id="location" 
                 name="location"
                 defaultValue={initialData?.address}
+                onChange={(e) => setCurrentAddress(e.target.value)}
                 placeholder="Street Address, City, Zip" 
                 className="w-full px-4 py-2.5 rounded-md border-gray-200 bg-white text-[#19322F] placeholder-gray-400 focus:ring-1 focus:ring-[#006655] focus:border-[#006655] transition-all text-sm font-sf-pro"
               />
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="latitude" className="block text-xs text-gray-500 font-medium font-sf-pro mb-1">Latitude</label>
+                <input 
+                  type="number" 
+                  step="any"
+                  id="latitude" 
+                  name="latitude"
+                  defaultValue={initialData?.latitude ?? undefined}
+                  onChange={(e) => setLat(e.target.value ? parseFloat(e.target.value) : null)}
+                  placeholder="e.g. 25.7617" 
+                  className="w-full px-3 py-2 rounded border-gray-200 bg-gray-50 text-[#19322F] focus:bg-white focus:ring-1 focus:ring-[#006655] focus:border-[#006655] transition-all font-sf-pro text-sm"
+                />
+              </div>
+              <div>
+                <label htmlFor="longitude" className="block text-xs text-gray-500 font-medium font-sf-pro mb-1">Longitude</label>
+                <input 
+                  type="number" 
+                  step="any"
+                  id="longitude" 
+                  name="longitude"
+                  defaultValue={initialData?.longitude ?? undefined}
+                  onChange={(e) => setLng(e.target.value ? parseFloat(e.target.value) : null)}
+                  placeholder="e.g. -80.1918" 
+                  className="w-full px-3 py-2 rounded border-gray-200 bg-gray-50 text-[#19322F] focus:bg-white focus:ring-1 focus:ring-[#006655] focus:border-[#006655] transition-all font-sf-pro text-sm"
+                />
+              </div>
+            </div>
+            
+            {/* Map Preview */}
+            <div className="relative h-48 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200 group">
+              <ClientMap 
+                key={`${lat}-${lng}`}
+                address={currentAddress || 'Property Location'} 
+                lat={lat ?? undefined} 
+                lng={lng ?? undefined} 
+              />
+              <div className="absolute top-2 right-2 flex items-center gap-1 z-[1000] pointer-events-none">
+                <span className="bg-white/90 text-[#19322F] px-2 py-1 rounded shadow-sm backdrop-blur-sm text-[10px] font-bold font-sf-pro flex items-center gap-1">
+                  <span className="material-icons text-[12px] text-[#006655]">map</span> Preview
+                </span>
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-400 font-sf-pro flex items-center gap-1">
+              <span className="material-icons text-xs">info</span>
+              Coordinates are used to pin the property on the map.
+            </p>
           </div>
         </div>
 
